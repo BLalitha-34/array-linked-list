@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node *next;
+};
+struct Node *head = NULL;
+void insert(int value) {
+    struct Node *newNode = malloc(sizeof(struct Node));
+    struct Node *temp;
+    newNode->data = value;
+    newNode->next = NULL;
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+    temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+}
+void delete(int position) {
+    struct Node *temp = head;
+    struct Node *prev = NULL;
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    if (position == 1) {
+        head = head->next;
+        free(temp);
+        return;
+    }
+    for (int i = 1; i < position && temp != NULL; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Invalid position\n");
+        return;
+    }
+    prev->next = temp->next;
+    free(temp);
+}
+void display() {
+    struct Node *temp = head;
+    printf("Elements: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+int main() {
+    insert(10);
+    insert(20);
+    insert(30);
+    insert(40);
+    display();
+    delete(2);
+    display();
+    return 0;
+}
+output:
+Elements: 10 20 30 40
+Elements: 10 30 40
+
